@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-84KNSQDNRZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-84KNSQDNRZ');
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p&display=swap" rel="stylesheet">
+    <style type="text/css">
+      .data {
+        width: 320px;
+        margin: 1em auto;
+      }
+      .data dt,
+      .data dd {
+        font-size: 0.7em;
+        line-height: 1.1;
+        margin: 0;
+        padding: 0;
+      }
+      .data dt {
+        font-weight: 700;
+      }
+      .data dd {
+        margin-left: 16px;
+      }
+      .nav_wrapper {
+        display: flex;
+        justify-content: space-around;
+      }
+      .nav_wrapper a {
+        width: 40%;
+        text-align: center;
+        transition: 0.5s;
+        margin-top: 24px;
+        cursor: pointer;
+      }
+      .permission {
+        border: 1px solid #f2481e;
+        color: #f2481e;
+        user-select: none;
+      }
+      .topic { 
+        height: 80px;
+        /*line-height:80px;*/
+        font-size: 24px;
+        font-family: 'M PLUS 1p', sans-serif;
+        margin: auto;
+        text-align: center;
+        color: rgb(16, 111, 148);
+      }
+      .archive {  
+        font-size: 12px;
+        font-family: 'M PLUS 1p', sans-serif;
+        margin: auto;
+        text-align: center;
+      }
+      .list {  
+        font-size: 12px;
+        font-family: 'M PLUS 1p', sans-serif;
+        height: 40vh;
+        overflow: auto;
+      }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <a href="" onclick=""></a>
+
+  <body>
+    <h3>話題に困ったら振るやつ</h3>
+    <div id="topic" class="topic">
+      ---
+    </div>
+    <div id="archive" class="archive">
+      aaa
+    </div>
+    <div class="nav_wrapper">
+      <a class="permission" onclick="permission_request();">
+        <i class="fa fa-cogs" aria-hidden="true"></i>
+        permission
+        <i class="fa fa-cogs" aria-hidden="true"></i>
+      </a>
+    </div>
+    
+    <div id="list" class="list">
+      lll
+    </div>
+
+    <form name="data" class="data">
+      <dl>
+        <dt>acceleration.x</dt>
+        <dd>
+          <svg xmlns="http://www.w3.org/2000/svg" width="300" height="8">
+            <rect x="0" y="0" width="300" height="8" fill="#eee" />
+            <rect x="150" y="0" width="0" height="8" fill="#f90" id="bar-x" />
+          </svg>
+        </dd>
+
+        <dt>acceleration.y</dt>
+        <dd>
+          <svg xmlns="http://www.w3.org/2000/svg" width="300" height="8">
+            <rect x="0" y="0" width="300" height="8" fill="#eee" />
+            <rect x="150" y="0" width="0" height="8" fill="#f90" id="bar-y" />
+          </svg>
+        </dd>
+
+        <dt>acceleration.z</dt>
+        <dd>
+          <svg xmlns="http://www.w3.org/2000/svg" width="300" height="8">
+            <rect x="0" y="0" width="300" height="8" fill="#eee" />
+            <rect x="150" y="0" width="0" height="8" fill="#f90" id="bar-z" />
+          </svg>
+        </dd>
+      </dl>
+    </form>
+
+    <script type="text/javascript">
+      let num = 0;
+      let buf_power = 0;
+
+      const topic_n = [
+        "趣味",
+        "好きな食べ物",
+        "犬派?猫派?",
+        "休日の過ごし方",
+        "好きな音楽",
+        "学生時代に打ち込んだこと",
+        "最近ハマっていること",
+        "Android派？iPhone派？",
+      ]
+      const topic_r = [
+        "今まででベストだった旅行/出張先",
+        "自分の出身地自慢",
+        "通信キャリア、何使ってる？？？",
+        "業務の中で一番楽しかった/やりがいを感じたこと",
+      ]
+      const topic_ssr = [
+        "仕事でのやらかしエピソード。。。",
+        "話したことのない秘密を一つ...笑",
+        "先端に所属した経緯を教えてください！",
+        "先端メンバーの尊敬しているところを教えてください！",
+      ]
+
+      var archive_n = new Array(topic_n.length);
+      var archive_r = new Array(topic_r.length);
+      var archive_ssr = new Array(topic_ssr.length);
+      archive_n.fill(0);
+      archive_r.fill(0);
+      archive_ssr.fill(0);
+
+      Array.prototype.randomGet = function() {
+        var index = Math.floor(Math.random() * this.length)
+        return [index, this[index]];
+      };
+
+      const res = document.getElementById("topic");
+      let [index, topic] = topic_n.randomGet();
+      res.innerText = String(topic);
+      archive_n[index] = 1;
+
+      function update_archive(){
+        const res = document.getElementById("archive");
+        const num_n = archive_n.reduce((prev, current) => prev + current, 0);
+        const num_r = archive_r.reduce((prev, current) => prev + current, 0);
+        const num_ssr = archive_ssr.reduce((prev, current) => prev + current, 0);
+        
+        res.innerHTML = `N:${num_n}/${archive_n.length}, R:${num_r}/${archive_r.length}, SSR:${num_ssr}/${archive_ssr.length}, ${num}回`;
+      }
+      function update_list(){
+        const res = document.getElementById("list");
+        const arr_n = archive_n.map((value, index) => {return value==1?"N:"+topic_n[index]:"???"})
+        const arr_r = archive_r.map((value, index) => {return value==1?"R:"+topic_r[index]:"???"})
+        const arr_ssr = archive_ssr.map((value, index) => {return value==1?"SSR:"+topic_ssr[index]:"???"})
+        
+        res.innerHTML = arr_n.join('<br />') + '<br />' + arr_r.join('<br />') + '<br />' + arr_ssr.join('<br />');
+      }
+
+      let state = "ready";
+
+      function add_event_listener() {
+        window.addEventListener(
+          "devicemotion",
+          function (event) {
+            const d = {};
+            d["x"] = event.acceleration.x;
+            d["y"] = event.acceleration.y;
+            d["z"] = event.acceleration.z;
+            const power = d["x"] * d["x"] + d["y"] * d["y"] + d["z"] * d["z"];
+            
+            if (power > 10 && state === "ready") {
+              state = "moving";
+              buf_power = 0;
+            } else if (power < 5 && state === "moving") {
+              num += 1;
+              state = "ready";
+
+              //抽出
+              if (buf_power > 1000) {
+                const res = document.getElementById("topic");
+                let [index, topic] = topic_ssr.randomGet();
+                res.innerText = String(topic);
+                archive_ssr[index] = 1;
+              } else if (buf_power > 500) {
+                const res = document.getElementById("topic");
+                let [index, topic] = topic_r.randomGet();
+                res.innerText = String(topic);
+                archive_r[index] = 1;
+              }
+              else {
+                const res = document.getElementById("topic");
+                let [index, topic] = topic_n.randomGet();
+                res.innerText = String(topic);
+                archive_n[index] = 1;
+              }
+              update_archive();
+              update_list();
+              gtag('event', 'shake', {'value': num});
+            } else if (state === "moving") {
+              if (power > buf_power) {
+                buf_power = power;
+              }
+            }
+
+            // 棒グラフ ------
+            const center = 150;
+            const zoom = 10;
+            for (const key in d) {
+              const barId = "bar-" + key;
+              document
+                .getElementById(barId)
+                .setAttribute("width", Math.abs(d[key]) * zoom);
+              if (d[key] < 0) {
+                document
+                  .getElementById(barId)
+                  .setAttribute("x", center - Math.abs(d[key]) * zoom);
+                document.getElementById(barId).setAttribute("fill", "#6cf");
+              } else {
+                document.getElementById(barId).setAttribute("x", center);
+                document.getElementById(barId).setAttribute("fill", "#f90");
+              }
+            }
+          },
+          true
+        );
+      }
+      function permission_request() {
+        if (
+          DeviceOrientationEvent &&
+          DeviceOrientationEvent.requestPermission &&
+          typeof DeviceOrientationEvent.requestPermission === "function"
+        ) {
+          DeviceMotionEvent.requestPermission().then(add_event_listener);
+        } else {
+          add_event_listener();
+        }
+      }
+      update_archive();
+      update_list();
+      
+    </script>
+  </body>
+</html>
