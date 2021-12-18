@@ -41,7 +41,7 @@
         justify-content: space-around;
       }
       .nav_wrapper a {
-        width: 40%;
+        width: 60%;
         text-align: center;
         transition: 0.5s;
         margin-top: 24px;
@@ -203,10 +203,10 @@
             d["z"] = event.acceleration.z;
             const power = d["x"] * d["x"] + d["y"] * d["y"] + d["z"] * d["z"];
             
-            if (power > 10 && state === "ready") {
+            if (power > 20 && state === "ready") {
               state = "moving";
               buf_power = 0;
-            } else if (power < 5 && state === "moving") {
+            } else if (power < 15 && state === "moving") {
               num += 1;
               state = "ready";
 
