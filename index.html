@@ -203,7 +203,7 @@
             d["z"] = event.acceleration.z;
             const power = d["x"] * d["x"] + d["y"] * d["y"] + d["z"] * d["z"];
             
-            if (power > 20 && state === "ready") {
+            if (power > 45 && state === "ready") {
               state = "moving";
               buf_power = 0;
             } else if (power < 15 && state === "moving") {
